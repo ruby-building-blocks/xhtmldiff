@@ -8,12 +8,6 @@ def Math.max(a, b)
 	a > b ? a : b
 end
 
-module Kernel
-	def debug 
-		yield if $DEBUG
-	end
-end
-
 module REXML
 
 	class Text 
@@ -91,7 +85,6 @@ class XHTMLDiff
 
     # This will be called with both elements are the same
   def match(event)
-		debug { $stderr.puts event.old_element.to_s }
     @output << event.old_element.deep_clone if event.old_element
   end
 
@@ -104,14 +97,11 @@ class XHTMLDiff
 		begin
 			sd = diff(event.old_element, event.new_element)
 		rescue ArgumentError
-			debug { $stderr.puts "Not subdiffable: #{$!.message}" }
 			sd = nil
 		end
 		if sd and (ratio = (Float(rs = sd.to_s.gsub(%r{<(ins|del)>.*</\1>}, '').size) / bs = Math.max(event.old_element.to_s.size, event.new_element.to_s.size))) > 0.5
-			debug { $stderr.puts "#{sd.to_s} -- Chose recursed: rs = #{rs}, bs = #{bs}, ratio - #{ratio}" }
 			@output << sd
 		else
-			debug { $stderr.puts "#{if sd.to_s then sd else "" end} vs #{event.old_element.to_s} and #{event.new_element.to_s} -- Chose whole: rs = #{rs}, bs = #{bs}, ratio = #{ratio}" }
 			@output << wrap(event.old_element, 'del')
 			@output << wrap(event.new_element, 'ins')
 		end
@@ -137,14 +127,12 @@ class XHTMLDiff
 
 	class XHTMLTextDiff < XHTMLDiff
 		def change(event)
-			debug { $stderr.puts "#{event.old_element.to_s} vs #{event.new_element.to_s} -- Chose whole" }
 			@output << wrap(event.old_element, 'del')
 			@output << wrap(event.new_element, 'ins')
 		end
 
 		# This will be called with both elements are the same
 		def match(event)
-			debug { $stderr.puts(([event.old_element.to_s] * 2).join(" vs ") << " -- Obviously, this is the same") }
 			@output << wrap(event.old_element, nil) if event.old_element
 		end
 
