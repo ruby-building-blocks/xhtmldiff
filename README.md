@@ -1,17 +1,21 @@
-= XHTML Diff
+XHTML Diff
+==========
 
-== Purpose
+Purpose
+-------
 
 To transform two revisions of an XHTML document into a single valid XHMTL
 document with redlines, using the <ins> and <del> tags.
 
-== Requirements
+Requirements
+------------
 
 * Diff::LCS
 * REXML (Standard Library in 1.8)
 * Delegate (Standard Library)
 
-== Installing
+Installing
+----------
 
 run setup.rb:
 
@@ -21,10 +25,12 @@ run setup.rb:
 
 That's it.
 
-== Other notes
+Other notes
+-----------
 
 There is some simple CSS suggested in the examples directory. It's just a 
 sample, but I think it makes decent browsers do the right thing. 
 
-== Author
-Aredridel <aredridel@nbtsc.org>
+Author
+-----
+Aria Stewart <aredridel@nbtsc.org>
